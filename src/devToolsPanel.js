@@ -52,7 +52,11 @@ const sendInjectContentScriptMessage = () => {
 const backgroundPageConnection = chrome.runtime.connect({ name: "devToolsPanel" });
 
 backgroundPageConnection.onMessage.addListener((message) => {
-  addTableRow(message.origin, message.data);
+
+  if(JSON.stringify(message.data).indexOf("wappalyzer") == -1 && JSON.stringify(message.data).indexOf("untrustedTypes") == -1) {
+
+    addTableRow(message.origin,decodeURI(decodeURIComponent(message.data)));
+  }
 });
 
 sendInjectContentScriptMessage();
