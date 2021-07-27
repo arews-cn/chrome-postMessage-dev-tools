@@ -53,9 +53,11 @@ const backgroundPageConnection = chrome.runtime.connect({ name: "devToolsPanel" 
 
 backgroundPageConnection.onMessage.addListener((message) => {
 
-  if(JSON.stringify(message.data).indexOf("wappalyzer") == -1 && JSON.stringify(message.data).indexOf("untrustedTypes") == -1) {
+  message_data = JSON.stringify(message.data)
 
-    addTableRow(message.origin,decodeURI(decodeURIComponent(message.data)));
+  if(message_data.indexOf("wappalyzer") == -1 && message_data.indexOf("untrustedTypes") == -1) {
+
+    addTableRow(message.origin,decodeURI(decodeURIComponent(message_data)).replace(/\"/g,""));
   }
 });
 
